@@ -1,25 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Field, Label, Hint, Input } from "@zendeskgarden/react-forms";
+import { Row, Col } from "@zendeskgarden/react-grid";
+import "@zendeskgarden/css-bedrock";
+import MultiSelector from "./MultiSelector";
+import { ThemeProvider } from "@zendeskgarden/react-theming";
+import { DEFAULT_THEME } from "@zendeskgarden/react-theming";
+import ReminderSelector from "./ReminderSelector";
+import CustomInput from "./CustomInput";
+import ActionSelector from "./ActionSelector";
+import MethodSelector from "./MethodSelector";
 
 function App() {
+  const [name, setName] = React.useState("");
+  const [description, setDescription] = React.useState("");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={DEFAULT_THEME}>
+      <Row justifyContent="center">
+        <Col sm={5}>
+          <CustomInput
+            name={"name"}
+            hint={"Name of the alert"}
+            setInput={setName}
+          />
+        </Col>
+      </Row>
+      <Row justifyContent="center">
+        <Col sm={5}>
+          <Field>
+            <CustomInput
+              name={"Description"}
+              hint={"Brief Alert Description"}
+              setInput={setDescription}
+            />
+          </Field>
+        </Col>
+      </Row>
+      <MultiSelector />
+      <Row>
+        <Col sm={5}>
+          <ReminderSelector />
+        </Col>
+        <Field>
+          <Input placeholder="placeholder" />
+        </Field>
+      </Row>
+      <ActionSelector />
+      <MethodSelector />
+    </ThemeProvider>
   );
 }
 
