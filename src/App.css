@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+.box {
+  margin: 1.7em;
+}
+
+.box-indented {
+  margin-left: 4em;
+}
+
+/* Headers */
+#title {
+  font-size: 22px;
+}
+
+#subtitle {
+  font-size: 16px;
+}
+
+.heading {
+  margin: 2.5em;
+  margin-bottom: 1.7em;
+}
+
+.addAlertButton {
+  margin-left: 2em;
+}

@@ -17,9 +17,12 @@
     "@zendeskgarden/react-tags": "^8.63.2",
     "@zendeskgarden/react-theming": "^8.63.2",
     "@zendeskgarden/react-typography": "^8.63.2",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-is": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "styled-components": "^5.3.9",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -48,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash.debounce": "^4.0.7"
+    "@types/lodash.debounce": "^4.0.7",
+    "source-map-loader": "^4.0.1"
   }
 }

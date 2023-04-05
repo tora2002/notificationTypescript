@@ -11,22 +11,28 @@ import ReminderSelector from "./ReminderSelector";
 import CustomInput from "./CustomInput";
 import ActionSelector from "./ActionSelector";
 import MethodSelector from "./MethodSelector";
+import { Button } from '@zendeskgarden/react-buttons';
 
 function App() {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   return (
     <ThemeProvider theme={DEFAULT_THEME}>
-      <Row justifyContent="center">
+      <div className="heading">
+        <Label id="title">Notifications and actions</Label>
+        <Hint id="subtitle">Add alerts to set reminders or update upcoming policy deadlines.</Hint>
+      </div>
+      
+      <Row className="box" justifyContent="start">
         <Col sm={5}>
           <CustomInput
-            name={"name"}
+            name={"Name"}
             hint={"Name of the alert"}
             setInput={setName}
           />
         </Col>
       </Row>
-      <Row justifyContent="center">
+      <Row className="box" justifyContent="start">
         <Col sm={5}>
           <Field>
             <CustomInput
@@ -37,17 +43,49 @@ function App() {
           </Field>
         </Col>
       </Row>
-      <MultiSelector />
-      <Row>
+
+      <Row className="box" justifyContent="start">
+        <Col sm={5}>
+          <MultiSelector />
+        </Col>
+      </Row>
+
+      <Row className="box" justifyContent="start">
         <Col sm={5}>
           <ReminderSelector />
         </Col>
-        <Field>
-          <Input placeholder="placeholder" />
-        </Field>
       </Row>
-      <ActionSelector />
-      <MethodSelector />
+
+      <Row className="box-indented" justifyContent="start">
+        <Col sm={5}>
+          <ActionSelector />
+        </Col>
+        <Col sm={5}>
+          <Field>
+            <CustomInput
+              name={"Change to..."}
+              hint={"What does the tag change to?"}
+              setInput={setDescription}
+            />
+          </Field>
+          {/* <Field>
+            <Input placeholder="placeholder" />
+          </Field>  */}
+        </Col>
+      </Row>
+
+      <Row className="box" justifyContent="start">
+        <Col sm={5}>
+          <MethodSelector />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col textAlign="start">
+          <Button className="addAlertButton">Add another alert</Button>
+        </Col>
+      </Row>
+      
     </ThemeProvider>
   );
 }

@@ -50,8 +50,7 @@ const ActionSelector = () => {
   }, [inputValue]);
 
   return (
-    <Row justifyContent="center">
-      <Col sm={5}>
+
         <Dropdown
           inputValue={inputValue}
           selectedItem={selectedItem}
@@ -59,9 +58,10 @@ const ActionSelector = () => {
           onInputValueChange={(value) => setInputValue(value)}
           downshiftProps={{ defaultHighlightedIndex: 0 }}
         >
+          
           <Field>
-            <Label>Action</Label>
-            <Hint>in the event of a breach, this is what happens</Hint>
+            <Label>Action upon breach</Label>
+            <Hint>In the event of a breach, this is what happens</Hint>
             <Autocomplete>{selectedItem}</Autocomplete>
           </Field>
           <Menu>
@@ -76,8 +76,7 @@ const ActionSelector = () => {
             )}
           </Menu>
         </Dropdown>
-      </Col>
-    </Row>
+
   );
 };
 

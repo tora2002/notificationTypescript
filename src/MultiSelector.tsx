@@ -61,9 +61,10 @@ const MultiSelector = () => {
       downshiftProps={{ defaultHighlightedIndex: 0 }}
       onInputValueChange={(value) => setInputValue(value)}
     >
+
       <Field>
-        <Label>Assigned Agents</Label>
-        <Hint>Define who will receive this text</Hint>
+        <Label>Add Agents</Label>
+        <Hint>Define who will receive this alert</Hint>
         <Multiselect
           maxItems={2}
           renderItem={({ value, removeValue }: any) => (
