@@ -7,11 +7,14 @@ import {
   Item,
   Label,
   Hint,
+  HeaderItem,
 } from "@zendeskgarden/react-dropdowns";
 import { Tag } from "@zendeskgarden/react-tags";
 import debounce from "lodash.debounce";
 
-const options = ["Assigned Agents", "Followers", "Agents", "Groups"];
+const options = ["Asignee", "Assignee and followers", "Requester", "Requester and CCs", "Daisy Adair", "George Bailey", "Harry Callahan", "Frank Drebin"];
+const ticket = ["Asignee", "Assignee and followers", "Requester", "Requester and CCs"]
+const agents = ["Daisy Adair", "George Bailey", "Harry Callahan", "Frank Drebin"]
 
 const MultiSelector = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -37,6 +40,46 @@ const MultiSelector = () => {
     filterMatchingOptionsRef.current(inputValue);
   }, [inputValue]);
 
+  const split = (matchingOptions: string[]): [string[], string[]] => {
+    const tickets: string[] = [];
+    const agents: string[] = [];
+
+    matchingOptions.forEach((option) => {
+      if (["Asignee", "Assignee and followers", "Requester", "Requester and CCs"].includes(option)) {
+        tickets.push(option);
+      } else {
+        agents.push(option);
+      }
+    });
+
+    return [tickets, agents];
+  };
+  const showRender = (matchedOptions: string[]) => {
+    const [tickets, agents]: [string[], string[]] = split(matchingOptions);
+    return (
+      <>
+        {tickets.length === 0 ? <></> :
+          <HeaderItem>
+            Ticket
+          </HeaderItem>}
+        {tickets.map((option) => (
+          <Item key={option} value={option}>
+            <span>{option}</span>
+          </Item>
+        ))}
+        {agents.length === 0 ? <></> :
+          <HeaderItem>
+            Agents
+          </HeaderItem>}
+        {agents.map((option) => (
+          <Item key={option} value={option}>
+            <span>{option}</span>
+          </Item>
+        ))}
+      </>
+    )
+  }
+
   const renderOptions = () => {
     if (isLoading) {
       return <Item disabled>Loading</Item>;
@@ -46,11 +89,7 @@ const MultiSelector = () => {
       return <Item disabled>No vegetables found</Item>;
     }
 
-    return matchingOptions.map((option) => (
-      <Item key={option} value={option}>
-        <span>{option}</span>
-      </Item>
-    ));
+    return showRender(matchingOptions);
   };
 
   return (
@@ -63,8 +102,6 @@ const MultiSelector = () => {
     >
 
       <Field>
-        <Label>Add Agents</Label>
-        <Hint>Define who will receive this alert</Hint>
         <Multiselect
           maxItems={2}
           renderItem={({ value, removeValue }: any) => (

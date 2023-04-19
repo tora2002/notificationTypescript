@@ -32,13 +32,14 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 .box {
-  margin: 1.7em;
+  margin-bottom: 1.7em;
 }
 
 .box-indented {
@@ -61,4 +62,81 @@
 
 .addAlertButton {
   margin-left: 2em;
+}
+
+.container {
+  margin-left: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  width: 45%;
+  border: 1px solid #D8DCDE;
+  border-radius: 8px;
+}
+
+.divider {
+  height: 1px;
+  width: calc(100% + 60px);
+  margin-left: -30px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-top: 0.5px solid #D8DCDE;
+}
+
+.anchor {
+  margin-right: 20px;
+  margin-top: 10px;
+}
+
+.button {
+  background-color: "white";
+}
+
+.sub-container {
+  padding: 20px;
+  width: 95%;
+  border: 1px solid #D8DCDE;
+  border-radius: 8px;
+}
+
+.flex-row-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.flex-row-action-container {
+  display: flex;
+  align-items: start;
+  justify-content: flex-start;
+}
+
+.child-box {
+  width: 100px;
+}
+
+
+.big {
+  width: 40%;
+}
+
+.small {
+  width: 20%;
+}
+
+.z-dropdown {
+  color: black;
+}
+
+.multi-select {
+  width: 40%;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.action-box {
+  width: 40%;
+}
+.checkbox {
+    display: flex;
+    align-items: start;
 }

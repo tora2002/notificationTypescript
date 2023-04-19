@@ -5,18 +5,16 @@ import "@zendeskgarden/css-bedrock";
 
 interface Props {
   name: string;
-  hint: string;
   setInput: (value: string) => void;
 }
 
-const CustomInput: React.FC<Props> = ({ name, hint, setInput }) => {
+const CustomInput: React.FC<Props> = ({ name, setInput }) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
   return (
     <Field>
       <Label>{name}</Label>
-      <Hint>{hint}</Hint>
       <Input onChange={handleInputChange} />
     </Field>
   );
