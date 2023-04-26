@@ -16,7 +16,11 @@ const options = ["Asignee", "Assignee and followers", "Requester", "Requester an
 const ticket = ["Asignee", "Assignee and followers", "Requester", "Requester and CCs"]
 const agents = ["Daisy Adair", "George Bailey", "Harry Callahan", "Frank Drebin"]
 
-const MultiSelector = () => {
+type MultiSelectorProps = {
+  onSelectedItemsChange: (selectedItems: string[]) => void;
+};
+
+const MultiSelector = ({ onSelectedItemsChange }: MultiSelectorProps) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +100,13 @@ const MultiSelector = () => {
     <Dropdown
       inputValue={inputValue}
       selectedItems={selectedItems}
-      onSelect={(items) => setSelectedItems(items)}
+      // onSelect={(items) => setSelectedItems(items)}
+
+      onSelect={(items) => {
+        setSelectedItems(items);
+        onSelectedItemsChange(items);
+      }}
+
       downshiftProps={{ defaultHighlightedIndex: 0 }}
       onInputValueChange={(value) => setInputValue(value)}
     >

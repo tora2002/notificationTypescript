@@ -18,14 +18,16 @@ import { AccordionContainer } from '@zendeskgarden/container-accordion';
 import { SM, MD, LG, XL, XXL, XXXL } from '@zendeskgarden/react-typography';
 import { ReactComponent as TrashIcon } from '@zendeskgarden/svg-icons/src/16/trash-stroke.svg';
 import ActionTable from "./ActionTable";
+// import styled from 'styled-components';
+import { Alert, Title, Close } from '@zendeskgarden/react-notifications';
+import SLACondition from "./Components/SLACondition";
+import Action from "./Components/Action";
 
 const SLAConditions = [
   "Before breach",
   "After breach",
   "At breach",
 ];
-
-
 
 function App() {
   const [name, setName] = React.useState("");
@@ -39,6 +41,63 @@ function App() {
   const [action, setAction] = useState("");
   const [who, setWho] = useState("");
   const [matchingActions, setMatchingActions] = useState(["Email", "SMS", "Ticket assignment"]);
+
+  const [showSLAAlert, setShowSLAAlert] = useState(false);
+  const [showActionAlert, setShowActionAlert] = useState(false);
+
+  type SLAConditionType = {
+    time: string;
+    hours: string;
+    minutes: string;
+  };
+
+  const [conditions, setConditions] = useState<SLAConditionType[]>([]);
+
+  const addCondition = () => {
+    setConditions([
+      ...conditions,
+      {
+        time: selectedItem,
+        hours,
+        minutes,
+      },
+    ]);
+  };
+
+
+  type ActionType = {
+    actionType: string;
+    who: string;
+  };
+
+  const [actions, setActions] = useState<ActionType[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+
+  const handleSelectItems = (items: string[]) => {
+    if (items.length > 0) {
+      setAction(items[0]);
+    }
+    if (items.length > 1) {
+      setWho(items[1]);
+    }
+  };
+
+
+  const addAction = () => {
+    const newAction = {
+      actionType: action,
+      who,
+    };
+  
+    setActions([...actions, newAction]);
+  };  
+
+
+  const deleteCondition = (conditionToDelete: SLAConditionType) => {
+    setConditions(conditions.filter((condition) => condition !== conditionToDelete));
+  };
+
   const filterMatchingOptionsRef = useRef(
     debounce((value: string) => {
       const matchedOptions = SLAConditions.filter(
@@ -61,7 +120,7 @@ function App() {
               <div style={{ paddingTop: "10px" }}> </div>
               <Hint id="subtitle">Add actions like email notifications and ticket assignments to help avoid an SLA breach.</Hint>
             </Col>
-            <Button >Add action</Button>
+
           </Row>
           <div className="divider"></div>
           <Row className="box" >
@@ -89,6 +148,8 @@ function App() {
               </Toggle>
             </Field>
           </Row>
+
+          {/* SLA Conditions */}
           <Row className="box">
             <Col>
               <LG>SLA Conditions </LG>
@@ -104,55 +165,70 @@ function App() {
 
           <div className="parent-box flex-row-container box">
             <div className="sub-container flex-row-container">
-              <div className="child-box big">
+                <div className="child-box big">
                 <Dropdown
-                  inputValue={inputValue}
-                  selectedItem={selectedItem}
-                  onSelect={item => setSelectedItem(item)}
-                  onInputValueChange={value => setInputValue(value)}
-                  downshiftProps={{ defaultHighlightedIndex: 0 }}
+                    inputValue={inputValue}
+                    selectedItem={selectedItem}
+                    onSelect={item => setSelectedItem(item)}
+                    onInputValueChange={value => setInputValue(value)}
+                    downshiftProps={{ defaultHighlightedIndex: 0 }}
                 >
-                  <DropField>
+                    <DropField>
                     <DropLabel>Time</DropLabel>
                     <Autocomplete>{selectedItem}</Autocomplete>
-                  </DropField>
-                  <Menu>
+                    </DropField>
+                    <Menu>
                     {matchingOptions.length ? (
-                      matchingOptions.map(option => (
+                        matchingOptions.map(option => (
                         <Item key={option} value={option}>
-                          <span>{option}</span>
+                            <span>{option}</span>
                         </Item>
-                      ))
+                        ))
                     ) : (
-                      <Item disabled>No matches found</Item>
+                        <Item disabled>No matches found</Item>
                     )}
-                  </Menu>
+                    </Menu>
                 </Dropdown>
-              </div>
+                </div>
 
-              <div className="child-box small">
+                <div className="child-box small">
                 <CustomInput
-                  name={"Hours"}
-                  setInput={setHours}
+                    name={"Hours"}
+                    setInput={setHours}
                 />
-              </div>
-              <div className="child-box small">
+                </div>
+                <div className="child-box small">
                 <CustomInput
-                  name={"Minutes"}
-                  setInput={setMinutes}
+                    name={"Minutes"}
+                    setInput={setMinutes}
                 />
-              </div>
+                </div>
             </div>
             <div className="child-box">
-              <IconButton>
+                <IconButton>
                 <TrashIcon />
-              </IconButton>
+                </IconButton>
             </div>
-          </div>
+        </div>
 
-          <Row className="box">
-            <Button style={{ marginLeft: "10px" }}>Add condition</Button>
-          </Row>
+        <Row className="box">
+        <Button style={{ marginLeft: "10px" }} onClick={addCondition}>
+              Add condition
+            </Button>
+              {showSLAAlert && (
+                <div className="alert">
+                  <Alert type="warning">
+                    <Title>Warning</Title>
+                    At least one SLA condition must be added.
+                    <Close aria-label="Close Warning Alert" />
+                  </Alert>
+                </div>
+              )}
+            </Row>
+        
+        {conditions.map((condition, index) => (
+          <SLACondition key={index} condition={condition} onDelete={deleteCondition} />
+        ))}
 
           <Row className="box">
             <Col>
@@ -167,7 +243,13 @@ function App() {
                 <ActionSelector />
               </div>
               <div className="multi-select">
-                <MultiSelector/>
+              {/* <MultiSelector
+                onSelectedItemsChange={(items) => {
+                  setSelectedItems(items);
+                }} */}
+                
+                <MultiSelector onSelectedItemsChange={handleSelectItems} />
+              
               </div>
             </div>
             <div className="child-box">
@@ -177,13 +259,48 @@ function App() {
             </div>
           </div>
           <Row className="box">
-            <Button style={{ marginLeft: "10px" }}>Add action</Button>
-          </Row>
+          <Button onClick={addAction} style={{ marginLeft: "10px" }}>
+            Add action
+          </Button>
+              {showActionAlert && (
+                <div className="alert">
+                  <Alert type="warning">
+                    <Title>Warning</Title>
+                    At least one action must be added.
+                    <Close aria-label="Close Warning Alert" />
+                  </Alert>
+                </div>
+              )}
+            </Row>
+
+            {actions.map((action, index) => (
+            <Action key={index} actionType={action.actionType} who={action.who} />
+          ))}
+
 
           <Row className="box" alignItems="center" justifyContent="end">
             <Anchor href="#default">Cancel</Anchor>
             <div style={{ padding: "20px" }}></div>
-            <Button>Save</Button>
+
+            <Button
+              onClick={() => {
+                if (selectedItem === "" || conditions.length === 0) {
+                  setShowSLAAlert(true);
+                } else {
+                  setShowSLAAlert(false);
+                }
+
+                if (action === "" || matchingActions.length === 0) {
+                  setShowActionAlert(true);
+                } else {
+                  setShowActionAlert(false);
+                }
+              }}
+            >
+              Save
+            </Button>
+
+
           </Row>
           <div className="divider"></div>
           <Row>
@@ -201,71 +318,3 @@ function App() {
 }
 
 export default App;
-
-{/* <div className="heading">
-<Label id="title">Notifications and actions</Label>
-<Hint id="subtitle">Add alerts to set reminders or update upcoming policy deadlines.</Hint>
-</div>
-
-<Row className="box" justifyContent="start">
-<Col sm={5}>
-  <CustomInput
-    name={"Name"}
-    hint={"Name of the alert"}
-    setInput={setName}
-  />
-</Col>
-</Row>
-<Row className="box" justifyContent="start">
-<Col sm={5}>
-  <Field>
-    <CustomInput
-      name={"Description"}
-      hint={"Brief Alert Description"}
-      setInput={setDescription}
-    />
-  </Field>
-</Col>
-</Row>
-
-<Row className="box" justifyContent="start">
-<Col sm={5}>
-  <MultiSelector />
-</Col>
-</Row>
-
-<Row className="box" justifyContent="start">
-<Col sm={5}>
-  <ReminderSelector />
-</Col>
-</Row>
-
-<Row className="box-indented" justifyContent="start">
-<Col sm={5}>
-  <ActionSelector />
-</Col>
-<Col sm={5}>
-  <Field>
-    <CustomInput
-      name={"Change to..."}
-      hint={"What does the tag change to?"}
-      setInput={setDescription}
-    />
-  </Field>
-  {/* <Field>
-    <Input placeholder="placeholder" />
-  </Field>  */}
-// </Col>
-// </Row>
-
-// <Row className="box" justifyContent="start">
-// <Col sm={5}>
-//   <MethodSelector />
-// </Col>
-// </Row>
-
-// <Row>
-// <Col textAlign="start">
-//   <Button className="addAlertButton">Add another alert</Button>
-// </Col>
-// </Row> */}
