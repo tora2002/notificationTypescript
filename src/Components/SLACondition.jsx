@@ -9,14 +9,14 @@ function SLACondition({ condition, onDelete }) {
         <div className="parent-box flex-row-container box">
         <div className="sub-container flex-row-container">
             <div className="child-box big">
-                Time: {time}
+                <b>Time:</b> {time}
             </div>
 
             <div className="child-box small">
-                Hours: {hours}
+                <b>Hours:</b> {hours}
             </div>
             <div className="child-box small">
-                Minutes: {minutes}
+                <b>Minutes:</b> {minutes}
             </div>
         </div>
         <div className="child-box">

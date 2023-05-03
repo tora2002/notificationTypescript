@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dropdown,
   Menu,
@@ -82,19 +82,43 @@ const nestedMenu = (selectedItem: any) => {
     )
   }
 }
-const ActionSelector = () => {
+
+type ActionSelectorProps = {
+  onChange: (selectedAction: string) => void;
+};
+
+const ActionSelector = ({ onChange }: ActionSelectorProps) => {
   const [state, setState] = useState({
     isOpen: false,
     tempSelectedItem: "undefined"
   });
+  const [selectedAction, setSelectedAction] = useState("Notify by > Email user");
+
+  useEffect(() => {
+    if (state.tempSelectedItem === "undefined" || state.tempSelectedItem === undefined) {
+      setSelectedAction("Notify by > Email user");
+    } else {
+      setSelectedAction(state.tempSelectedItem);
+    }
+  }, [state.tempSelectedItem]);
+
   return (
         <Dropdown
           isOpen={state.isOpen}
+          selectedItem={selectedAction}
           onSelect={item => {
-            if (item !== 'tickets' && item !== 'Ticket' && item !== 'Notify by' && item !== 'Notify-by' && item !== 'Notify Zendesk integration' && item !== 'Notify-Zendesk-integration') {
+            // if (item !== 'tickets' && item !== 'Ticket' && item !== 'Notify by' && item !== 'Notify-by' && item !== 'Notify Zendesk integration' && item !== 'Notify-Zendesk-integration') {
               console.log(`You picked a ${item}`);
-            }
+              setSelectedAction(item);
+              onChange(item);
+            // }
           }}
+
+          // onSelect={(item) => {
+          //   setSelectedAction(item);
+          //   onChange(item);
+          // }}
+
           onStateChange={(changes, stateAndHelpers) => {
             const updatedState: any = {};
             
@@ -125,12 +149,30 @@ const ActionSelector = () => {
             <div style={{ paddingTop: "10px" }}> </div>
           </Field>
           <Trigger>
-            <Button style = {{color:"black", borderColor:"#D8DCDE"}}>
-              {(state.tempSelectedItem === "undefined" || state.tempSelectedItem === undefined) ? "Notify by > Email user" : state.tempSelectedItem}
+
+          <Button style={{color:"black", borderColor:"#D8DCDE"}}>
+            {selectedAction}
+            <Button.EndIcon>
+              <ChevronIcon />
+            </Button.EndIcon>
+          </Button>
+
+            {/* <Button style = {{color:"black", borderColor:"#D8DCDE"}}>
+              {(state.tempSelectedItem === "undefined" || state.tempSelectedItem === undefined) ? "Notify by > Email user" : state.tempSelectedItem}              
               <Button.EndIcon>
                 <ChevronIcon />
               </Button.EndIcon>
-            </Button>
+            </Button> */}
+
+            {/* <Button style={{color:"black", borderColor:"#D8DCDE"}}>
+              {state.tempSelectedItem === "undefined" || state.tempSelectedItem === undefined
+                ? setSelectedAction("Notify by > Email user")
+                : setSelectedAction(state.tempSelectedItem)}
+              <Button.EndIcon>
+                <ChevronIcon />
+              </Button.EndIcon>
+            </Button> */}
+
           </Trigger>
           
           <Menu isAnimated = {false}>

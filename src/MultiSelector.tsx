@@ -100,13 +100,10 @@ const MultiSelector = ({ onSelectedItemsChange }: MultiSelectorProps) => {
     <Dropdown
       inputValue={inputValue}
       selectedItems={selectedItems}
-      // onSelect={(items) => setSelectedItems(items)}
-
       onSelect={(items) => {
         setSelectedItems(items);
         onSelectedItemsChange(items);
       }}
-
       downshiftProps={{ defaultHighlightedIndex: 0 }}
       onInputValueChange={(value) => setInputValue(value)}
     >
