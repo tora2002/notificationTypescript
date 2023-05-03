@@ -42,11 +42,7 @@ function ActionTableEntry({ index, title, description, activeStatus, onSelect, o
           },
           offset: {
             fn: (data) => {
-              /**
-               * Ensure correct placement relative to trigger
-               **/
               data.offsets.popper.top -= 2;
-
               return data;
             },
           },

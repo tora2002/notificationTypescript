@@ -107,22 +107,14 @@ const ActionSelector = ({ onChange }: ActionSelectorProps) => {
           isOpen={state.isOpen}
           selectedItem={selectedAction}
           onSelect={item => {
-            // if (item !== 'tickets' && item !== 'Ticket' && item !== 'Notify by' && item !== 'Notify-by' && item !== 'Notify Zendesk integration' && item !== 'Notify-Zendesk-integration') {
-              console.log(`You picked a ${item}`);
-              setSelectedAction(item);
-              onChange(item);
-            // }
+            console.log(`You picked a ${item}`);
+            setSelectedAction(item);
+            onChange(item);
           }}
-
-          // onSelect={(item) => {
-          //   setSelectedAction(item);
-          //   onChange(item);
-          // }}
 
           onStateChange={(changes, stateAndHelpers) => {
             const updatedState: any = {};
             
-
             if (Object.hasOwn(changes, 'isOpen')) {
               updatedState.isOpen =
                 changes.selectedItem === 'tickets' ||
@@ -156,23 +148,6 @@ const ActionSelector = ({ onChange }: ActionSelectorProps) => {
               <ChevronIcon />
             </Button.EndIcon>
           </Button>
-
-            {/* <Button style = {{color:"black", borderColor:"#D8DCDE"}}>
-              {(state.tempSelectedItem === "undefined" || state.tempSelectedItem === undefined) ? "Notify by > Email user" : state.tempSelectedItem}              
-              <Button.EndIcon>
-                <ChevronIcon />
-              </Button.EndIcon>
-            </Button> */}
-
-            {/* <Button style={{color:"black", borderColor:"#D8DCDE"}}>
-              {state.tempSelectedItem === "undefined" || state.tempSelectedItem === undefined
-                ? setSelectedAction("Notify by > Email user")
-                : setSelectedAction(state.tempSelectedItem)}
-              <Button.EndIcon>
-                <ChevronIcon />
-              </Button.EndIcon>
-            </Button> */}
-
           </Trigger>
           
           <Menu isAnimated = {false}>
